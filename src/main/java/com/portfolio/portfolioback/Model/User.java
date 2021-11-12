@@ -1,27 +1,31 @@
-package com.portfolio.portfolioback.Dao;
+package com.portfolio.portfolioback.Model;
 
 import java.sql.Date;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.print.attribute.standard.DateTimeAtCompleted;
 
+import com.sun.istack.NotNull;
 import org.springframework.lang.NonNull;
 
 @Entity
 public class User {
     @Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NonNull
+    @NotNull
     private String firstname;
-    @NonNull
+    @NotNull
     private String name;
-    @NonNull
+	@NotNull
     private ZonedDateTime birthday;
-    @NonNull
+	@NotNull
     private String adress;
-    @NonNull
+	@NotNull
     private String city;
     private String phoneNumber;
     
