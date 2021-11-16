@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 
 
 @RestController
@@ -21,15 +22,10 @@ class UserController{
 
 	
 	@PostMapping("/newUser")
-public User newUser(@RequestBody final User user, final BindingResult bindingResult) {
+public User newUser(@RequestBody @Valid final User user, final BindingResult bindingResult) {
 	User userToSave = null;
-
-	bindingResult.hasErrors();
-
 	userToSave = user;
 	userRepository.save(userToSave);
-
-
 return userToSave;
 }
 

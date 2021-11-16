@@ -1,16 +1,14 @@
 package com.portfolio.portfolioback.Model;
 
-import java.sql.Date;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.print.attribute.standard.DateTimeAtCompleted;
+import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
-import org.springframework.lang.NonNull;
 
 @Entity
 public class User {
@@ -18,14 +16,18 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
+	@NotBlank
     private String firstname;
     @NotNull
+	@NotBlank
     private String name;
 	@NotNull
     private ZonedDateTime birthday;
 	@NotNull
+	@NotBlank
     private String adress;
 	@NotNull
+	@NotBlank
     private String city;
     private String phoneNumber;
     
