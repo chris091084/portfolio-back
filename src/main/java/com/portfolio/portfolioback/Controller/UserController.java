@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 
 @RestController
@@ -37,5 +38,18 @@ public User newUser(@RequestBody @Valid final User user, final BindingResult bin
 			userRepository.save(userToSave);
 			return userToSave;
 }
+
+	@GetMapping("/getUsers")
+	public Iterable <User> getUsers() {
+
+		return userRepository.findAll();
+	}
+
+	@GetMapping("/getUser")
+	public Optional<User> getUserById(@RequestParam(name = "id",required = false) Long id) {
+
+		return userRepository.findById(id);
+	}
+
 
 }
