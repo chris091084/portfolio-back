@@ -12,7 +12,6 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/")
 class UserController{
 
 	@Autowired
