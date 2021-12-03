@@ -46,6 +46,12 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/admin").hasRole("ADMIN") // cette attribut permet de dire les routes protégées par leurs roles respectifs
                 //.antMatchers("/user").permitAll()
                 .antMatchers("/authentication").permitAll()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and().
                 exceptionHandling().and().sessionManagement()
