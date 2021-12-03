@@ -1,31 +1,35 @@
 package com.portfolio.portfolioback.Controller;
 
-import com.portfolio.portfolioback.Configuration.AuthentificationService;
+import com.portfolio.portfolioback.Configuration.AuthenticationService;
 import com.portfolio.portfolioback.Configuration.UserPrincipal;
 import com.portfolio.portfolioback.Dao.UserRepository;
 import com.portfolio.portfolioback.JwUtil.JwtUtil;
+import com.portfolio.portfolioback.Model.AuthentificationRequest;
+import com.portfolio.portfolioback.Model.AuthentificationResponse;
 import com.portfolio.portfolioback.Model.SignUpRequest;
 import com.portfolio.portfolioback.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:8100")
-@RequestMapping("/auth")
 class LoginController {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
 
     @Autowired
-    private AuthentificationService userDetailsService;
+    private AuthenticationService userDetailsService;
 
     private UserPrincipal userPrincipal;
 
@@ -34,6 +38,9 @@ class LoginController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
     @CrossOrigin(origins = "")
@@ -58,13 +65,42 @@ class LoginController {
             user.setAdress(signUp.getAdress());
             user.setCity(signUp.getCity());
 
-
             userRepository.save(user);
 
             return ResponseEntity.ok("User successfully registred");
         } catch (BadCredentialsException e) {
             throw new Exception("An error happen during the registred process.", e);
         }
+    }
+
+
+    @RequestMapping(value = "/authentication", method = RequestMethod.POST)
+    public ResponseEntity<?> creatAuthentificationToken(@RequestBody AuthentificationRequest authentificationRequest) throws Exception{
+        String name =authentificationRequest.getUsername();
+        String password = authentificationRequest.getPassword();
+        Authentication authentication;
+        try {
+
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken("christian.coley@hotmail.fr", "1234")
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserPrincipal userResponse = (UserPrincipal) authentication.getPrincipal();
+        }
+        catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or password", e);
+        }
+
+
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authentificationRequest.getUsername());
+
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal userResponse = (UserPrincipal) authentication.getPrincipal();
+
+
+        return ResponseEntity.ok(new AuthentificationResponse(jwt,userResponse));
     }
 
 }

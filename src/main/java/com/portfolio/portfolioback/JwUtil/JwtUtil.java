@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    private String SECRET_KEY = "jwtPortfolioSecretKey";
+    private String SECRET_KEY = "jwtAscApsideSecretKey";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -47,21 +47,16 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserPrincipal userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername(), userDetails.getId(), userDetails.getAuthorities());
+        return createToken(claims, userDetails.getUsername());
     }
 
-    private String createToken(Map<String, Object> claims, String subject, long user_id, Collection<?> role) {
+    private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .claim("user_id", user_id)
-                .claim("role", role)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1800000)) //0.5 heures de connexion
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

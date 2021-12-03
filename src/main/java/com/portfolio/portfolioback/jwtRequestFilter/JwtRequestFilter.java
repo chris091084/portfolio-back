@@ -3,7 +3,7 @@ package com.portfolio.portfolioback.jwtRequestFilter;
 
 
 
-import com.portfolio.portfolioback.Configuration.AuthentificationService;
+import com.portfolio.portfolioback.Configuration.AuthenticationService;
 import com.portfolio.portfolioback.JwUtil.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
     @Autowired
-    private AuthentificationService userDetailsService;
+    private AuthenticationService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;

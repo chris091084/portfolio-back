@@ -15,12 +15,8 @@ public class UserPrincipal implements UserDetails {
     /** serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-
     /** User first name. */
     private String userName;
-
-    private String email;
 
     @JsonIgnore
     private String password;
@@ -30,32 +26,14 @@ public class UserPrincipal implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public UserPrincipal(User user){
-        this.id = user.getId();
-
+        this.userName = user.getEmail();
         this.password = user.getPassword();
-        this.email = user.getEmail();
-        this.userName = email;
+        this.active = user.isActive();
         this.authorities = Arrays.stream(user.getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
-
-    public String getEmail() {
-        return email;
-    }
-
-
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-
-    public long getId() {
-        return id;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -91,5 +69,4 @@ public class UserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return active;
     }
-
 }
