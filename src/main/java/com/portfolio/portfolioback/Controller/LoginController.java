@@ -20,9 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@CrossOrigin(origins = "http://localhost:8100", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "https://localhost:8100")
 class LoginController {
 
     @Autowired
@@ -42,8 +41,6 @@ class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
-    @CrossOrigin(origins = "")
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody @Valid SignUpRequest signUp) throws Exception {
 
@@ -64,6 +61,8 @@ class LoginController {
             user.setBirthday(signUp.getBirthday());
             user.setAdress(signUp.getAdress());
             user.setCity(signUp.getCity());
+            user.setPhoneNumber(signUp.getPhoneNumber());
+            user.setActive(true);
 
             userRepository.save(user);
 
