@@ -36,8 +36,21 @@ public class User {
 	private String password;
 	private String role;
 	private boolean Active;
-    
-    
+
+
+	public User(String firstname, String name, String email, ZonedDateTime birthday, String adress, String city, String phoneNumber, String password, String role, boolean active) {
+		this.firstname = firstname;
+		this.name = name;
+		this.email = email;
+		this.birthday = birthday;
+		this.adress = adress;
+		this.city = city;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+		this.role = role;
+		Active = active;
+	}
+
 	public Long getId() {
 		return id;
 	}

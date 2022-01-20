@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
-class UserController{
+public class UserController{
 
 	@Autowired
 	private UserRepository userRepository;
